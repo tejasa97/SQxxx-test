@@ -4,7 +4,6 @@ import os.path
 
 from domain.commands.command_manager import CommandManager, Commands
 from domain.parking_lot.parking_lot import ParkingLotManager
-import pdb
 
 
 def is_valid_file(parser, arg):
@@ -54,7 +53,7 @@ if __name__ == '__main__':
                 )
 
             except ParkingLotManager.ParkingSlotFull:
-                print("***Error: Sorry, it appears the parking lot is full!")
+                print("""***Error: Sorry, it appears the parking lot is full!""")
 
         elif command_type == Commands.GET_SLOTS_FOR_DRIVER_AGE:
             try:
@@ -63,7 +62,7 @@ if __name__ == '__main__':
                     f"""{','.join(map(str, slot_numbers))}"""
                 )
             except ParkingLotManager.InvalidAge:
-                print(f"null")
+                print(f"""null""")
 
         elif command_type == Commands.RETURN_SLOT_WITH_REG_NO:
             try:
@@ -74,7 +73,7 @@ if __name__ == '__main__':
                 )
 
             except ParkingLotManager.InvalidRegNumber:
-                print("***Error: Sorry, invalid registration number provided!")
+                print("""***Error: Sorry, invalid registration number provided!""")
 
         elif command_type == Commands.VACATE_SLOT_NO:
             try:
@@ -85,9 +84,9 @@ if __name__ == '__main__':
                 )
 
             except ParkingLotManager.InvalidSlotNumber:
-                print("***Error: Sorry, it appears you are requesting an invalid slot number!")
+                print(""""***Error: Sorry, it appears you are requesting an invalid slot number!""")
             except ParkingLotManager.SlotEmpty:
-                print("Slot already vacant")
+                print("""Slot already vacant""")
 
         elif command_type == Commands.GET_REG_NOS_FOR_DRIVER_AGE:
             try:

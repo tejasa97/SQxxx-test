@@ -1,8 +1,9 @@
 from .car import Car
 from .utils import Heap
+from domain.utils import Singleton
 
 
-class ParkingLotManager():
+class ParkingLotManager(metaclass=Singleton):
 
     class ParkingSlotFull(Exception):
         ...
@@ -24,7 +25,7 @@ class ParkingLotManager():
 
     __max_slots = 0
 
-    def initialize_slots(self, num_slots):
+    def initialize_slots(self, num_slots: int):
         """Initializes the parking lot with a definite number of slots
 
         :param num_slots: number of slots
@@ -36,16 +37,16 @@ class ParkingLotManager():
         self.__parking_slots = {}
         self.empty_slots_heap = Heap()
 
-    def add_car_to_slot(self, registration_number, driver_age):
-        """[summary]
+    def add_car_to_slot(self, registration_number: str, driver_age: int):
+        """Parks a car in the parking lot
 
-        :param registration_number: [description]
-        :type registration_number: [type]
-        :param driver_age: [description]
-        :type driver_age: [type]
-        :raises self.ParkingSlotFull: [description]
-        :return: [description]
-        :rtype: [type]
+        :param registration_number: car's registration_number
+        :type registration_number: str
+        :param driver_age: car driver's age
+        :type driver_age: int
+        :raises self.ParkingSlotFull: if no parking slot available
+        :return: assigned slot number
+        :rtype: int
         """
 
         if len(self.__parking_slots) >= self.__max_slots:
@@ -58,11 +59,11 @@ class ParkingLotManager():
         return nearest_slot
 
     def vacate_slot(self, slot_number):
-        """[summary]
+        """Removes a car from the parking lot (by it's `slot number`)
 
-        :param slot_number: [description]
-        :type slot_number: [type]
-        :raises InvalidSlotNumber: [description]
+        :param slot_number: slot number
+        :type slot_number: int
+        :raises InvalidSlotNumber: if invalid slot number provided
         """
 
         if slot_number > self.__max_slots:
@@ -81,13 +82,13 @@ class ParkingLotManager():
         return registration_number, driver_age
 
     def get_slot_for_registration_number(self, registration_number):
-        """[summary]
+        """Returns the slot number of the car with `registration number` provided
 
-        :param registration_number: [description]
-        :type registration_number: [type]
-        :raises self.InvalidRegNumber: [description]
-        :return: [description]
-        :rtype: [type]
+        :param registration_number: car's registration number
+        :type registration_number: str
+        :raises self.InvalidRegNumber: if invalid registration number provided
+        :return: slot number
+        :rtype: int
         """
 
         for slot_num, car in self.__parking_slots.items():
@@ -96,8 +97,15 @@ class ParkingLotManager():
 
         raise self.InvalidRegNumber
 
-    def get_all_slots_for_age(self, driver_age):
+    def get_all_slots_for_age(self, driver_age: int):
+        """Returns all the slots used by car's having drivers with a particular age
 
+        :param driver_age: car driver's age
+        :type driver_age: int
+        :raises self.InvalidAge: if no such cars found
+        :return: slot numbers
+        :rtype: List[int]
+        """
         slot_numbers = []
         for slot_num, car in self.__parking_slots.items():
             if car.driver_age == driver_age:
@@ -108,12 +116,18 @@ class ParkingLotManager():
 
         return slot_numbers
 
-    def get_all_cars_for_age(self, driver_age):
+    def get_all_cars_for_age(self, driver_age: int):
+        """Returns all car's having a particular driver's age
 
+        :param driver_age: car driver's age
+        :type driver_age: int
+        :raises self.InvalidAge: if no such cars found
+        :return: registration numbers
+        :rtype: List[str]
+        """
         registration_numbers = []
         for car in self.__parking_slots.values():
             if car.driver_age == driver_age:
-                print("adding")
                 registration_numbers.append(car.registration_number)
 
         if len(registration_numbers) == 0:
@@ -124,7 +138,10 @@ class ParkingLotManager():
     """ Helper functions """
 
     def get_nearest_slot(self):
-        """[summary]
+        """Returns the nearest slot available currently
+
+        :return: nearest slot
+        :rtype: int
         """
 
         nearest_slot = self.empty_slots_heap.pop()
