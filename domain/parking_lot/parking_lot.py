@@ -11,9 +11,6 @@ class ParkingLotManager(metaclass=Singleton):
     class InvalidSlotNumber(Exception):
         ...
 
-    class DoesNotExist(Exception):
-        ...
-
     class SlotEmpty(Exception):
         ...
 
