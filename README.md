@@ -1,4 +1,4 @@
-# Sqxxx test <br>
+# SQxxx test <br>
 
 ### Language: Python <br>
 ### Version compatibility: 3.7+
